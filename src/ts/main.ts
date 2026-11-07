@@ -47,6 +47,20 @@ renderer.render(scene, camera);
 // renderer.setClearColor(  0x000000, 0 ); // the default
 
 
+const loaderEl = document.getElementById('loader');
+const loaderText = document.getElementById('loader-text');
+const loadingWords = ['מזל טוב', 'רק פעם בשנה', 'עוד מעט זה מגיע', 'רק עוד קצת וזה יופיע'];
+let wordIndex = 0;
+const wordTimer = window.setInterval(() => {
+    wordIndex = (wordIndex + 1) % loadingWords.length;
+    if (loaderText) loaderText.textContent = loadingWords[wordIndex];
+}, 1500);
+const hideLoader = () => {
+    window.clearInterval(wordTimer);
+    loaderEl?.classList.add('hidden');
+    window.setTimeout(() => loaderEl?.remove(), 600);
+};
+
 const loader = new GLTFLoader();
 const file =  'cake.glb'
 let imageObj: THREE.Object3D<THREE.Object3DEventMap>;
@@ -57,8 +71,10 @@ loader.load(file, (gltf: { scene: Object3D<Object3DEventMap> }) => {
    gltf.scene.position.y = -0.12;
 
     scene.add(gltf.scene);
+    hideLoader();
 }, undefined, (error: any) => {
     console.error('An error happened', error);
+    hideLoader();
 });
 
 window.addEventListener('resize', async () => {
