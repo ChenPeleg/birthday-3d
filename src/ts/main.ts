@@ -4,6 +4,8 @@ import * as THREE from 'three';
 import { Object3D, Object3DEventMap} from 'three';
 // @ts-ignore
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+// @ts-ignore
+import {MeshoptDecoder} from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 
 const scene = new THREE.Scene();
 
@@ -62,6 +64,8 @@ const hideLoader = () => {
 };
 
 const loader = new GLTFLoader();
+// cake.glb is meshopt-compressed (EXT_meshopt_compression) to keep the download small on mobile
+loader.setMeshoptDecoder(MeshoptDecoder);
 const file =  'cake.glb'
 let imageObj: THREE.Object3D<THREE.Object3DEventMap>;
 // '/Gingerbread House.glb'
